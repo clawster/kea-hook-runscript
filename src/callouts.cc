@@ -23,11 +23,25 @@ using namespace isc::hooks;
 
 extern "C" {
 
+// From funzoneq/kea-hook-runscript
+std::string toText(const std::vector<uint8_t>& binary) {
+    return std::string(binary.begin(), binary.end());
+}
+
 /* These are helpers that extract relevant information from Kea data
  * structures and store them in environment variables. */
 void extract_bool(std::vector<std::string>& env, const std::string variable, bool value)
 {
     env.push_back(variable + "=" + std::string(value ? "1" : "0"));
+}
+
+// From funzoneq/kea-hook-runscript
+void extract_string_option(int optionNr, std::vector<std::string>& env, const std::string envprefix, const Pkt4Ptr pkt4)
+{
+    OptionPtr option = pkt4->getOption(optionNr);
+    if (option) {
+        env.push_back(envprefix + "OPTION" + std::to_string(optionNr) + "=" + option->toString());
+    }
 }
 
 /* Extract information from a DHCPv4 packet (query received, or response
@@ -58,9 +72,32 @@ void extract_pkt4(std::vector<std::string>& env, const std::string envprefix, co
     env.push_back(envprefix + "RELAY_HOPS=" + std::to_string(pkt4->getHops()));
 
     /* Specific Options */
-    OptionPtr option60 = pkt4->getOption(60);
-    if (option60) {
-        env.push_back(envprefix + "OPTION60=" + option60->toString());
+    extract_string_option(12, env, envprefix, pkt4);
+    extract_string_option(60, env, envprefix, pkt4);
+
+    // Option 43 (Suboptions 1-12)
+    OptionPtr option43 = pkt4->getOption(43);
+    if (option43)
+    {
+        for (int a = 1; a < 13; a = a + 1)
+        {
+            OptionPtr SubPtr = option43->getOption(a);
+            if (SubPtr)
+            {
+                env.push_back(envprefix + "OPTION43_SUB" + std::to_string(a) + "=" + SubPtr->toHexString());
+            }
+        }
+    }
+
+    // Option 82 (Suboptions 1-2)
+    OptionPtr option82 = pkt4->getOption(82);
+    if (option82) {
+        for(int a = 1; a < 3; a = a + 1) {
+            OptionPtr SubPtr = option82->getOption(a);
+            if (SubPtr) {
+                 env.push_back(envprefix + "OPTION82_SUB" + std::to_string(a) + "=" + SubPtr->toHexString());
+            }
+        }
     }
 }
 
