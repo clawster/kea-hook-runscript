@@ -32,6 +32,10 @@ class Ipv4
     var $KEA_QUERY4_RELAY_HOPS = null;
     /** @var ?string  Option 60 - vendor id */
     var $KEA_QUERY4_OPTION60 = null;
+    /** @var ?string  Hex-Encoded representation of OPTION82 Sub1 */
+    var $KEA_QUERY4_OPTION82_SUB1=null;
+    /** @var ?string  Hex-Encoded representation of OPTION82 Sub2 */
+    var $KEA_QUERY4_OPTION82_SUB2=null;
     /** @var ?string  Client IP address dhcp/pkt4.h */
     var $KEA_QUERY4_CIADDR = null;
     /** @var ?string  Server IP address dhcp/pkt4.h */
@@ -40,9 +44,6 @@ class Ipv4
     var $KEA_QUERY4_YIADDR = null;
     /** @var ?string  Gateway IP address (inserted by DHCP relay) dhcp/pkt4.h */
     var $KEA_QUERY4_GIADDR = null;
-
-    var $KEA_QUERY4_OPTION82_SUB1=null;
-    var $KEA_QUERY4_OPTION82_SUB2=null;
 
     /** @var ?string  Type of DHCP message  dhcp/dhcp4.h */
     var $KEA_RESPONSE4_TYPE = null;
@@ -68,6 +69,12 @@ class Ipv4
     var $KEA_RESPONSE4_YIADDR = null;
     /** @var ?string  Gateway IP address  dhcp/pkt4.h */
     var $KEA_RESPONSE4_GIADDR = null;
+    /** @var ?string  Hex-Encoded representation of OPTION82 Sub1 */
+    var $KEA_RESPONSE4_OPTION82_SUB1=null;
+    /** @var ?string  Hex-Encoded representation of OPTION82 Sub2 */
+    var $KEA_RESPONSE4_OPTION82_SUB2=null;
+
+
     /** @var ?IPv4  IP prefix of the subnet (without prefix length) */
     var $KEA_SUBNET4_PREFIX = null;
     /** @var ?int Prefix length of the subnet (0 to 32) */
@@ -112,8 +119,8 @@ class Ipv4
         $this->KEA_QUERY4_SIADDR           = getenv("KEA_QUERY4_SIADDR");
         $this->KEA_QUERY4_YIADDR           = getenv("KEA_QUERY4_YIADDR");
         $this->KEA_QUERY4_GIADDR           = getenv("KEA_QUERY4_GIADDR");
-        $this->KEA_QUERY4_OPTION82_SUB1    = getenv("KEA_OPTION82_SUB1");
-        $this->KEA_QUERY4_OPTION82_SUB2    = getenv("KEA_OPTION82_SUB2");
+        $this->KEA_QUERY4_OPTION82_SUB1    = getenv("KEA_QUERY4_OPTION82_SUB1");
+        $this->KEA_QUERY4_OPTION82_SUB2    = getenv("KEA_QUERY4_OPTION82_SUB2");
 
         $this->KEA_RESPONSE4_TYPE          = getenv("KEA_RESPONSE4_TYPE");
         $this->KEA_RESPONSE4_INTERFACE     = getenv("KEA_RESPONSE4_INTERFACE");
@@ -127,6 +134,8 @@ class Ipv4
         $this->KEA_RESPONSE4_SIADDR        = getenv("KEA_RESPONSE4_SIADDR");
         $this->KEA_RESPONSE4_YIADDR        = getenv("KEA_RESPONSE4_YIADDR");
         $this->KEA_RESPONSE4_GIADDR        = getenv("KEA_RESPONSE4_GIADDR");
+        $this->KEA_RESPONSE4_OPTION82_SUB1 = getenv("KEA_RESPONSE4_OPTION82_SUB1");
+        $this->KEA_RESPONSE4_OPTION82_SUB2 = getenv("KEA_RESPONSE4_OPTION82_SUB2");
 
         $this->KEA_SUBNET4_PREFIX          = getenv("KEA_SUBNET4_PREFIX");
         $this->KEA_SUBNET4_PREFIXLEN       = (int) getenv("KEA_SUBNET4_PREFIXLEN");
